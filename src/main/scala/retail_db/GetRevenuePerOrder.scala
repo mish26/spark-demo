@@ -21,7 +21,7 @@ object GetRevenuePerOrder {
       reduceByKey(_ + _).
       map(oi => oi._1 + "," + oi._2)
 
-    revenuePerOrder.saveAsTextFile(args(2))
+//    revenuePerOrder.saveAsTextFile(args(2))
   }
 
 }
