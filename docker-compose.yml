@@ -1,0 +1,28 @@
+version: "3.0"
+services:
+  elasticsearch:
+    entrypoint: /entrypoints/docker-entrypoint-es-plugins.sh
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.graph.enabled=false
+      - xpack.monitoring.enabled=false
+      - xpack.security.enabled=false
+      - xpack.watcher.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ./entrypoints:/entrypoints
+      - ./elasticsearch/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/config/elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml
+      - ./elasticsearch/config/user_dictionary.dic:/etc/elasticsearch/analysis/user_dictionary.dic
+    container_name: es_dev_cluster
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.4.0
+    ports:
+      - "5601:5601"
+    links:
+      - elasticsearch:elasticsearch
